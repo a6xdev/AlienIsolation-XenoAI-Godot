@@ -20,6 +20,6 @@ func _input(event: InputEvent) -> void:
 
 		if result:
 			var _position = result.position
-			marker_target.global_position = _position
+			marker_target.global_position = Vector3(_position.x, 1.0, _position.z)
 			marker_target.visible = true
-			xeno_ref.navigation_agent.set_target_position(_position)
+			xeno_ref.navigation_agent.set_target_position(marker_target.global_position)

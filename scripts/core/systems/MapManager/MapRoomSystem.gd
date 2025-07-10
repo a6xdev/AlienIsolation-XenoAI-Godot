@@ -25,14 +25,13 @@ func _ready() -> void:
 	body_entered.connect(_on_body_entered)
 	body_exited.connect(_on_boddy_exited)
 
-
-func _process(delta: float) -> void:
-	debug()
-
-func debug():
-	ImGui.Begin("RoomSystem")
-	ImGui.Text("activity_level: %s" % activity_level)
-	ImGui.End()
+#func _process(delta: float) -> void:
+	#debug()
+#
+#func debug():
+	#ImGui.Begin("RoomSystem")
+	#ImGui.Text("activity_level: %s" % activity_level)
+	#ImGui.End()
 
 func _on_body_entered(body):
 	if body is Player:

@@ -1,0 +1,27 @@
+[gd_scene load_steps=5 format=3 uid="uid://cvn3rynssiq82"]
+
+[ext_resource type="Script" uid="uid://dv8te64oqbqro" path="res://scripts/core/systems/SoundSystem/SoundEvent.gd" id="1_qs6y2"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_8ot8v"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qs6y2"]
+albedo_color = Color(0.157509, 0.999398, 0.00541837, 1)
+
+[sub_resource type="SphereMesh" id="SphereMesh_8ot8v"]
+material = SubResource("StandardMaterial3D_qs6y2")
+radius = 0.1
+height = 0.2
+
+[node name="SoundEvent" type="Area3D"]
+top_level = true
+collision_layer = 16
+collision_mask = 0
+script = ExtResource("1_qs6y2")
+
+[node name="collision" type="CollisionShape3D" parent="."]
+top_level = true
+shape = SubResource("SphereShape3D_8ot8v")
+debug_color = Color(0.663735, 0.7, 0, 0.42)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("SphereMesh_8ot8v")

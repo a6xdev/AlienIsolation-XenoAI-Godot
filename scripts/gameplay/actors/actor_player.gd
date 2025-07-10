@@ -3,6 +3,8 @@ class_name Player
 
 @onready var head: Node3D = $head
 
+const SOUND_EVENT = preload("res://assets/prefabs/systems/SoundEvent.tscn")
+
 enum STATE {
 	IDLE,
 	WALKING,
@@ -39,7 +41,7 @@ var in_debug:bool = false
 var run_toggle:bool = false
 var is_moving:bool = false
 var is_running:bool = false
-var in_interface:bool = false
+var is_crouching:bool = false
 
 #region GODOT FUNCTIONS
 func _ready() -> void:
@@ -59,6 +61,8 @@ func _input(event: InputEvent) -> void:
 		run_toggle = !run_toggle
 
 func _process(delta: float) -> void:
+	debug()
+	
 	if in_debug:
 		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 	else:
@@ -145,6 +149,14 @@ func movement_controller(delta:float):
 #endregion
 
 #region CALLS
+func debug():
+	ImGui.Begin("Player Manager")
+	if ImGui.Button("SoundEvent") or Input.is_action_just_pressed("ui_cancel"):
+		var sound = SOUND_EVENT.instantiate()
+		add_child(sound)
+		sound.global_position = global_position
+		Logger.print_msg(str("SOUND_EVENT"))
+	ImGui.End()
 #endregion
 
 #region SIGNALS

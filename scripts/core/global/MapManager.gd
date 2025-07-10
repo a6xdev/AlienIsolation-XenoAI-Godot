@@ -36,7 +36,7 @@ func get_perfect_room(ai_position:Vector3) -> MapRoomSystem:
 	for room in activity_places:
 		if room == enemy_current_room:
 			# logic to explore the place.	
-			print("random 1")
+			Logger.print_msg(str("AI_IN_SAME_ROOM"))
 			return get_random_room()
 			
 		var distance = ai_position.distance_to(room.global_position)

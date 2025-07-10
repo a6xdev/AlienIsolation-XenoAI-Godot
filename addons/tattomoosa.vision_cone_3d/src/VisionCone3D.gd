@@ -244,16 +244,18 @@ func _on_body_shape_entered(
 		if _body_probe_data.has(body):
 			_body_probe_data.erase(body)
 		return
-	var shape := _get_collision_shape_node_in_body(body, body_shape_index)
-	var body_probes : Array[VisionTestProber] = _body_probe_data.get_or_add(
-		body, [] as Array[VisionTestProber]
-	)
+	
+	if body is CharacterBody3D:
+		var shape := _get_collision_shape_node_in_body(body, body_shape_index)
+		var body_probes : Array[VisionTestProber] = _body_probe_data.get_or_add(
+			body, [] as Array[VisionTestProber]
+		)
 
-	var has_prober := _get_prober_for_shape(shape, body)
-	if !has_prober:
-		body_probes.push_back(VisionTestProber.new(self, shape, body))
-	else:
-		push_warning("Already has prober")
+		var has_prober := _get_prober_for_shape(shape, body)
+		if !has_prober:
+			body_probes.push_back(VisionTestProber.new(self, shape, body))
+		else:
+			push_warning("Already has prober")
 
 @warning_ignore("return_value_discarded")
 func _on_body_shape_exited(
@@ -264,12 +266,14 @@ func _on_body_shape_exited(
 ) -> void:
 	if !body:
 		return
-	var shape := _get_collision_shape_node_in_body(body, body_shape_index)
-	var prober := _get_prober_for_shape(shape, body)
-	var body_probers : Array[VisionTestProber]= _body_probe_data[body]
-	body_probers.erase(prober)
-	if body_probers.is_empty():
-		_body_probe_data.erase(body)
+		
+	if body is CharacterBody3D:
+		var shape := _get_collision_shape_node_in_body(body, body_shape_index)
+		var prober := _get_prober_for_shape(shape, body)
+		var body_probers : Array[VisionTestProber]= _body_probe_data[body]
+		body_probers.erase(prober)
+		if body_probers.is_empty():
+			_body_probe_data.erase(body)
 
 
 #endregion VisionCone3D

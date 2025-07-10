@@ -23,7 +23,7 @@ Logger="*res://addons/logger/logger.tscn"
 
 [display]
 
-window/size/mode=3
+window/vsync/vsync_mode=0
 
 [editor_plugins]
 
@@ -93,3 +93,8 @@ a_debug={
 3d_physics/layer_2="Player"
 3d_physics/layer_3="Enemy"
 3d_physics/layer_4="Items"
+3d_physics/layer_5="SoundEvent"
+
+[physics]
+
+3d/physics_engine="Jolt Physics"
