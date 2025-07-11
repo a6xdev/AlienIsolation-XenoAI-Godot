@@ -23,8 +23,9 @@ func update_behavior(delta: float) -> void:
 		target_index += 1
 		
 		waiting_for_new_target = true
-		if target_index > 3:
+		if target_index > 3 or (MapManager.player_current_room == MapManager.enemy_current_room):
 			await get_tree().create_timer(5.0).timeout
+			target_index = 0
 		
 		patrol_current_target = MapManager.get_perfect_room(actor.global_position)
 		actor.navigation_agent.set_target_position(patrol_current_target.global_position)

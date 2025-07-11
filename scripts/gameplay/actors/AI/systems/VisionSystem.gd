@@ -18,14 +18,17 @@ var focused_detecting:bool = false
 var normal_detecting:bool = false
 var peripheral_detecting:bool = false
 
+signal actor_spotted(body:Player)
+signal actor_lost()
+
 func update_system(delta:float):
 	if not player_ref:
 		return
 	
 	var modifier:float = 0.0
-	if focused_detecting: modifier += 4.0
-	if normal_detecting: modifier += 2.0
-	if peripheral_detecting: modifier += 0.5
+	if focused_detecting: modifier += 5.0
+	if normal_detecting: modifier += 3.0
+	if peripheral_detecting: modifier += 1.5
 	if player_ref.is_crouching: modifier *= 0.5
 	# if player is in light
 	
@@ -36,8 +39,12 @@ func update_system(delta:float):
 	
 	if seeing_player >= SEE_THRESHOLD and not is_player_visible:
 		is_player_visible = true
+		emit_signal("actor_spotted", player_ref)
 	elif seeing_player <= 0.0 and is_player_visible:
+		await get_tree().create_timer(2.0).timeout
 		is_player_visible = false
+		player_ref = null
+		actor_lost.emit()
 
 #region SIGNALS
 func _on_vision_focused_body_sighted(body: Node3D) -> void:

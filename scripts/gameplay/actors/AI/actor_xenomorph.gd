@@ -36,6 +36,10 @@ var current_speed:float = 0.0
 var current_speed_anim:float = 0.0
 var target_speed:float = 0.0
 
+var is_stopped:bool = false
+var is_walking:bool = false
+var is_running:bool = false
+
 var is_investigation:bool = false
 var is_inspect:bool = false
 var is_with_fear:bool = false
@@ -46,7 +50,7 @@ var movement_target:Vector3
 
 #region GODOT FUNCTIONS
 func _ready() -> void:
-	pass
+	current_speed = walk_speed
 
 func _physics_process(delta: float) -> void:
 	movement_controller(delta)
@@ -60,9 +64,8 @@ func _physics_process(delta: float) -> void:
 		behaviors_list.INVESTIGATE:
 			ai_investigatin_behavior.update_behavior(delta)
 		behaviors_list.CHASE:
-			pass
+			ai_chasing_behavior.update_behavior(delta)
 	
-	current_speed = velocity.length()
 	if not is_on_floor():
 		velocity.y -= 10.0
 
@@ -72,7 +75,27 @@ func _process(delta: float) -> void:
 
 #region CONTROLLERS
 func animation_controller(delta:float):
-	animation_player.set("parameters/movement/movement_offset/blend_position", velocity.length())
+	if velocity.length() >= 1.0:
+		match current_behaviors_list:
+			behaviors_list.PATROL:
+				is_stopped = false
+				is_walking = true
+				is_running = false
+				current_speed = walk_speed
+			behaviors_list.INVESTIGATE:
+				is_stopped = false
+				is_walking = true
+				is_running = false
+				current_speed = walk_speed
+			behaviors_list.CHASE:
+				is_stopped = false
+				is_walking = false
+				is_running = true
+				current_speed = run_speed
+	else:
+		is_stopped = true
+		is_walking = false
+		is_running = false
 	
 func movement_controller(delta):
 	if can_move:
@@ -84,7 +107,7 @@ func movement_controller(delta):
 		var direction = (new_next_target - global_position).normalized()
 		var target_rotation = atan2(direction.x, direction.z)
 		
-		velocity = direction * walk_speed
+		velocity = direction * current_speed
 		rotation.y = lerp_angle(rotation.y, target_rotation, rotation_speed * delta)
 		
 		movement_target = new_next_target
@@ -96,9 +119,13 @@ func movement_controller(delta):
 
 #region CALLS
 func change_behavior(value:behaviors_list) -> void:
+	# Why change the path post processing? Well, when AI is investigating or chasing, its better get staight to the point.
+	
 	match value:
 		behaviors_list.INVESTIGATE:
 			is_investigation = true
+			navigation_agent.path_postprocessing = NavigationPathQueryParameters3D.PATH_POSTPROCESSING_CORRIDORFUNNEL
+		behaviors_list.CHASE:
 			navigation_agent.path_postprocessing = NavigationPathQueryParameters3D.PATH_POSTPROCESSING_CORRIDORFUNNEL
 		_:
 			navigation_agent.path_postprocessing = NavigationPathQueryParameters3D.PATH_POSTPROCESSING_NONE
@@ -106,9 +133,28 @@ func change_behavior(value:behaviors_list) -> void:
 	current_behaviors_list = value
 	
 func debug():
+	var current_behavior:String = ""
+	
 	ImGui.Begin("%s" % name)
 	#ImGui.Text("velocity: %s" % velocity.length())
-	ImGui.Text("current_behavior: %s" % current_behaviors_list)
+	match current_behaviors_list:
+		behaviors_list.PATROL:
+			current_behavior = "PATROL"
+		behaviors_list.INVESTIGATE:
+			current_behavior = "INVESTIGATE"
+		behaviors_list.CHASE:
+			current_behavior = "CHASE"
+	
+	ImGui.Text("current_behavior: %s" % current_behavior)
+	ImGui.Text("current_speed: %s" % current_speed)
+	ImGui.Text("velocity: %s" % velocity.length())
+	
+	if ImGui.TreeNode("States"):
+		ImGui.Text("is_stopped: %s" % is_stopped)
+		ImGui.Text("is_walking: %s" % is_walking)
+		ImGui.Text("is_running: %s" % is_running)
+		ImGui.TreePop()
+	
 	if ImGui.TreeNode("Actor Flags"):
 		if ImGui.Button("can_move: %s" % can_move):
 			can_move = !can_move
@@ -123,6 +169,7 @@ func debug():
 	if can_see_actors and ImGui.TreeNode("Xenomorph Vision System"):
 		ImGui.Text("seeing_player: %s" % vision_system.seeing_player)
 		ImGui.Text("is_player_visible: %s" % vision_system.is_player_visible)
+		ImGui.Text("player_ref: %s" % vision_system.player_ref)
 		ImGui.Text("focused_detecting: %s" % vision_system.focused_detecting)
 		ImGui.Text("normal_detecting: %s" % vision_system.normal_detecting)
 		ImGui.Text("peripheral_detecting: %s" % vision_system.peripheral_detecting)

@@ -13,9 +13,6 @@ var current_target = null
 
 var is_investigation:bool = false
 
-func _process(delta: float) -> void:
-	pass
-
 func update_behavior(delta:float) -> void:
 	if actor.navigation_agent.is_navigation_finished():
 		actor.is_inspect = true
@@ -27,4 +24,4 @@ func update_behavior(delta:float) -> void:
 func set_place_to_investigate(place:Vector3) -> void:
 	actor.navigation_agent.set_target_position(place)
 	current_target = place
-	Logger.print_msg(str("AI_HEARD_SOUND"))
+	Logger.print_msg(str("AI_WILL_INVESTIGATE"))

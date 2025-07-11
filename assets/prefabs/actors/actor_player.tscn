@@ -10,6 +10,7 @@ height = 1.8
 collision_layer = 2
 collision_mask = 5
 script = ExtResource("1_i5215")
+run_speed = 10.0
 
 [node name="head" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)

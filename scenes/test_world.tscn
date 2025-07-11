@@ -44,7 +44,6 @@ sky = SubResource("Sky_ynswa")
 [node name="actor_player" parent="actors" instance=ExtResource("1_umbte")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 6)
 walk_speed = 2.5
-run_speed = 5.0
 
 [node name="actor_xenomorph" parent="actors" instance=ExtResource("1_kyfjp")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.25, 0.572917)

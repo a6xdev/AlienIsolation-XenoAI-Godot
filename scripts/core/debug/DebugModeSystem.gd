@@ -2,10 +2,11 @@ extends Node3D
 
 @onready var marker_target: MarkerTarget = $MarkerTarget
 
+@export var active:bool = false
 @export var xeno_ref:ActorXenomorph
 
 func _input(event: InputEvent) -> void:
-	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT and active:
 		var camera = get_viewport().get_camera_3d()
 		var ray_origin = camera.project_ray_origin(event.position)
 		var ray_direction = camera.project_ray_normal(event.position)
