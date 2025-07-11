@@ -17,4 +17,4 @@ func _on_vision_system_actor_spotted(body: Player) -> void:
 	
 func _on_vision_system_actor_lost() -> void:
 	actor_being_chased = null
-	#actor.change_behavior(actor.behaviors_list.PATROL)
+	actor.change_behavior(actor.behaviors_list.PATROL)

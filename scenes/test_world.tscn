@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://dkl2qib1h0l5j"]
+[gd_scene load_steps=17 format=3 uid="uid://dkl2qib1h0l5j"]
 
 [ext_resource type="Script" uid="uid://dmblfogywvysi" path="res://scripts/core/debug/DebugModeSystem.gd" id="1_3263u"]
 [ext_resource type="PackedScene" uid="uid://cvu2vlsmja14j" path="res://assets/prefabs/actors/actor_xenomorph.tscn" id="1_kyfjp"]
@@ -6,6 +6,7 @@
 [ext_resource type="Script" uid="uid://cs77edwjy0fqi" path="res://scripts/core/systems/MarkerTarget.gd" id="2_umbte"]
 [ext_resource type="Texture2D" uid="uid://dq5kio1scr367" path="res://assets/textures/GroundPrototype/Dark/texture_08.png" id="5_ynswa"]
 [ext_resource type="Script" uid="uid://cnbs2bymdwn5g" path="res://scripts/core/systems/MapManager/MapRoomSystem.gd" id="6_dvny0"]
+[ext_resource type="Script" uid="uid://beohawaebv06o" path="res://scripts/core/systems/MapManager/VentWaypoint.gd" id="7_xwrkq"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_3263u"]
 font_color = Color(1, 0.640625, 0, 1)
@@ -42,11 +43,11 @@ sky = SubResource("Sky_ynswa")
 [node name="actors" type="Node" parent="."]
 
 [node name="actor_player" parent="actors" instance=ExtResource("1_umbte")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 6)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7, 0.9, 18)
 walk_speed = 2.5
 
 [node name="actor_xenomorph" parent="actors" instance=ExtResource("1_kyfjp")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.25, 0.572917)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.25, 0.572917)
 
 [node name="DebugModeSystem" type="Node3D" parent="actors" node_paths=PackedStringArray("xeno_ref")]
 script = ExtResource("1_3263u")
@@ -282,6 +283,19 @@ size = Vector3(0.2, 4, 8)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
 operation = 2
 size = Vector3(0.695, 3, 3)
+
+[node name="DuctsWaypoint" type="Marker3D" parent="map/NavigationRegion3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 1, 15)
+script = ExtResource("7_xwrkq")
+metadata/_custom_type_script = "uid://beohawaebv06o"
+
+[node name="CSGBox3D" type="CSGBox3D" parent="map"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 3.4, 15)
+size = Vector3(5, 0.2, 5)
+
+[node name="CSGSphere3D" type="CSGSphere3D" parent="map/CSGBox3D"]
+operation = 2
+radius = 0.965
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(-0.866023, -0.433016, 0.250001, 0, 0.499998, 0.866027, -0.500003, 0.749999, -0.43301, 0, 0, 0)

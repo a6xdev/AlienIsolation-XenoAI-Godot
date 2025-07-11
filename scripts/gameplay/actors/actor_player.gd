@@ -3,6 +3,8 @@ class_name Player
 
 @onready var head: Node3D = $head
 
+@onready var body_animation_player: AnimationPlayer = $BodyAnimationPlayer
+
 const SOUND_EVENT = preload("res://assets/prefabs/systems/SoundEvent.tscn")
 
 enum STATE {
@@ -59,6 +61,8 @@ func _input(event: InputEvent) -> void:
 	
 	if Input.is_action_just_pressed("m_run"):
 		run_toggle = !run_toggle
+	
+	if Input.is_action_just_pressed("a_crouch"): crouch_mechanic()
 
 func _process(delta: float) -> void:
 	debug()
@@ -146,6 +150,13 @@ func movement_controller(delta:float):
 #endregion
 
 #region MECHANICS
+func crouch_mechanic():
+	if is_crouching:
+		body_animation_player.play_backwards("anim_crouch")
+		is_crouching = false
+	else:
+		body_animation_player.play("anim_crouch")
+		is_crouching = true
 #endregion
 
 #region CALLS

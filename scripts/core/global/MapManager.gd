@@ -11,6 +11,8 @@ var viable_distant:Array = []
 var recently_visited:Array = []
 var perfect_room_index:int = 0
 
+var vents:Array[VentWaypoint] = []
+
 var nav_region:NavigationRegion3D
 
 func _process(delta: float) -> void:
@@ -59,3 +61,15 @@ func get_perfect_room(ai_position:Vector3) -> MapRoomSystem:
 	else:
 		Logger.print_msg(str("GET ROOM RANDOM"))
 		return get_random_room()
+
+func get_perfect_duct(ai_position:Vector3) -> VentWaypoint:
+	var closest_vent:VentWaypoint = null
+	var shortest_distantce = INF
+	
+	for vent in vents:
+		var distance = ai_position.distance_to(vent.global_position)
+		if distance < shortest_distantce:
+			shortest_distantce = distance
+			closest_vent = vent
+	
+	return closest_vent

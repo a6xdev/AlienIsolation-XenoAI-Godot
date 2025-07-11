@@ -10,13 +10,15 @@ class_name ActorXenomorph
 @onready var ai_chasing_behavior: Node = $behaviors/AI_chasing_behavior
 @onready var ai_investigatin_behavior: Node = $behaviors/AI_investigatin_behavior
 @onready var ai_patroling_behavior: Node = $behaviors/AI_patroling_behavior
+@onready var ai_vent_behavior: Node = $behaviors/AI_vent_behavior
 
 var move_dir:Vector3 = Vector3.ZERO
 
 enum behaviors_list {
 	PATROL,
 	INVESTIGATE,
-	CHASE
+	CHASE,
+	VENT
 }
 
 var current_behaviors_list:behaviors_list = behaviors_list.PATROL
@@ -44,6 +46,8 @@ var is_investigation:bool = false
 var is_inspect:bool = false
 var is_with_fear:bool = false
 var is_crawling:bool = false
+var ToVent:bool = false
+var IsInVent:bool = false
 
 # Movement
 var movement_target:Vector3
@@ -65,6 +69,8 @@ func _physics_process(delta: float) -> void:
 			ai_investigatin_behavior.update_behavior(delta)
 		behaviors_list.CHASE:
 			ai_chasing_behavior.update_behavior(delta)
+		behaviors_list.VENT:
+			ai_vent_behavior.update_behavior(delta)
 	
 	if not is_on_floor():
 		velocity.y -= 10.0
@@ -144,6 +150,8 @@ func debug():
 			current_behavior = "INVESTIGATE"
 		behaviors_list.CHASE:
 			current_behavior = "CHASE"
+		behaviors_list.VENT:
+			current_behavior = "DUCT"
 	
 	ImGui.Text("current_behavior: %s" % current_behavior)
 	ImGui.Text("current_speed: %s" % current_speed)
