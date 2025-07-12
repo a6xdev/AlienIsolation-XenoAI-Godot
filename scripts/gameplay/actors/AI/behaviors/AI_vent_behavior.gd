@@ -4,8 +4,8 @@ extends Node
 
 var CurrentVent:VentWaypoint = null
 
-func _process(delta: float) -> void:
-	debug()
+#func _process(delta: float) -> void:
+	#debug()
 
 func update_behavior(delta:float):
 	if not CurrentVent:
@@ -25,6 +25,7 @@ func debug():
 func _on_animation_tree_animation_finished(anim_name: StringName) -> void:
 	match anim_name:
 		"vent_climb_in":
+			await get_tree().create_timer(4.0).timeout
 			actor.ToVent = false
 		"vent_climb_out":
 			actor.IsInVent = false

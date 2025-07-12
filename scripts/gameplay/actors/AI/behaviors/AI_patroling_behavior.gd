@@ -27,6 +27,7 @@ func update_behavior(delta: float) -> void:
 		GoToVentIndex += 1
 		
 		waiting_for_new_target = true
+		
 		if TargetIndex > 3 or (MapManager.player_current_room == MapManager.enemy_current_room):
 			await get_tree().create_timer(5.0).timeout
 			TargetIndex = 0

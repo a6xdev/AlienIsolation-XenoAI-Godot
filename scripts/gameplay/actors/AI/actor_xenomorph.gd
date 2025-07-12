@@ -18,7 +18,8 @@ enum behaviors_list {
 	PATROL,
 	INVESTIGATE,
 	CHASE,
-	VENT
+	VENT,
+	ATTACK
 }
 
 var current_behaviors_list:behaviors_list = behaviors_list.PATROL
@@ -38,16 +39,15 @@ var current_speed:float = 0.0
 var current_speed_anim:float = 0.0
 var target_speed:float = 0.0
 
-var is_stopped:bool = false
-var is_walking:bool = false
-var is_running:bool = false
+var IsStopped:bool = false
+var IsWalking:bool = false
+var IsRunning:bool = false
 
-var is_investigation:bool = false
-var is_inspect:bool = false
-var is_with_fear:bool = false
-var is_crawling:bool = false
+var IsInvestigation:bool = false
+var IsInspect:bool = false
 var ToVent:bool = false
 var IsInVent:bool = false
+var IsAttacking:bool = false
 
 # Movement
 var movement_target:Vector3
@@ -84,24 +84,24 @@ func animation_controller(delta:float):
 	if velocity.length() >= 1.0:
 		match current_behaviors_list:
 			behaviors_list.PATROL:
-				is_stopped = false
-				is_walking = true
-				is_running = false
+				IsStopped = false
+				IsWalking = true
+				IsRunning = false
 				current_speed = walk_speed
 			behaviors_list.INVESTIGATE:
-				is_stopped = false
-				is_walking = true
-				is_running = false
+				IsStopped = false
+				IsWalking = true
+				IsRunning = false
 				current_speed = walk_speed
 			behaviors_list.CHASE:
-				is_stopped = false
-				is_walking = false
-				is_running = true
+				IsStopped = false
+				IsWalking = false
+				IsRunning = true
 				current_speed = run_speed
 	else:
-		is_stopped = true
-		is_walking = false
-		is_running = false
+		IsStopped = true
+		IsWalking = false
+		IsRunning = false
 	
 func movement_controller(delta):
 	if can_move:
@@ -124,12 +124,19 @@ func movement_controller(delta):
 #endregion
 
 #region CALLS
+func rotate_towards_target(target_position: Vector3):
+	var direction = (target_position - global_position).normalized()
+	direction.y = 0
+	
+	var target_angle = atan2(direction.x, direction.z)
+	rotation.y = target_angle
+
 func change_behavior(value:behaviors_list) -> void:
 	# Why change the path post processing? Well, when AI is investigating or chasing, its better get staight to the point.
 	
 	match value:
 		behaviors_list.INVESTIGATE:
-			is_investigation = true
+			IsInvestigation = true
 			navigation_agent.path_postprocessing = NavigationPathQueryParameters3D.PATH_POSTPROCESSING_CORRIDORFUNNEL
 		behaviors_list.CHASE:
 			navigation_agent.path_postprocessing = NavigationPathQueryParameters3D.PATH_POSTPROCESSING_CORRIDORFUNNEL
@@ -157,11 +164,8 @@ func debug():
 	ImGui.Text("current_speed: %s" % current_speed)
 	ImGui.Text("velocity: %s" % velocity.length())
 	
-	if ImGui.TreeNode("States"):
-		ImGui.Text("is_stopped: %s" % is_stopped)
-		ImGui.Text("is_walking: %s" % is_walking)
-		ImGui.Text("is_running: %s" % is_running)
-		ImGui.TreePop()
+	#if ImGui.TreeNode("States"):
+		#ImGui.TreePop()
 	
 	if ImGui.TreeNode("Actor Flags"):
 		if ImGui.Button("can_move: %s" % can_move):
@@ -181,6 +185,7 @@ func debug():
 		ImGui.Text("focused_detecting: %s" % vision_system.focused_detecting)
 		ImGui.Text("normal_detecting: %s" % vision_system.normal_detecting)
 		ImGui.Text("peripheral_detecting: %s" % vision_system.peripheral_detecting)
+		
 		ImGui.TreePop()
 	ImGui.End()
 #endregion

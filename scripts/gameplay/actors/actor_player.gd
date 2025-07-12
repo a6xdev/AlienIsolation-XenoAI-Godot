@@ -4,6 +4,7 @@ class_name Player
 @onready var head: Node3D = $head
 
 @onready var body_animation_player: AnimationPlayer = $BodyAnimationPlayer
+@onready var alien_anim_position: Marker3D = $AlienAnimPosition
 
 const SOUND_EVENT = preload("res://assets/prefabs/systems/SoundEvent.tscn")
 
@@ -160,6 +161,13 @@ func crouch_mechanic():
 #endregion
 
 #region CALLS
+func kill_player():
+	$PlayerUI/BG.show()
+	MapManager.rooms.clear()
+	MapManager.vents.clear()
+	await get_tree().create_timer(3.0).timeout
+	get_tree().reload_current_scene()
+	
 func debug():
 	ImGui.Begin("Player Manager")
 	if ImGui.Button("SoundEvent") or Input.is_action_just_pressed("ui_cancel"):
