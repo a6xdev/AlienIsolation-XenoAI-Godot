@@ -46,6 +46,11 @@ func update_system(delta:float):
 		player_ref = null
 		actor_lost.emit()
 
+func change_vision_debug_draw(value:bool):
+	vision_focused.debug_draw = value
+	vision_normal.debug_draw = value
+	vision_peripheral.debug_draw = value
+
 #region SIGNALS
 func _on_vision_focused_body_sighted(body: Node3D) -> void:
 	if body is Player:

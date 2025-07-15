@@ -1,14 +1,23 @@
-[gd_scene load_steps=8 format=3 uid="uid://co0dhjxl6y006"]
+[gd_scene load_steps=12 format=3 uid="uid://co0dhjxl6y006"]
 
 [ext_resource type="Script" uid="uid://oiyh5n0frlx4" path="res://scripts/gameplay/actors/actor_player.gd" id="1_i5215"]
+[ext_resource type="Texture2D" uid="uid://debcg28tepnmg" path="res://assets/textures/GroundPrototype/Orange/texture_09.png" id="2_4ayty"]
 
-[sub_resource type="SphereMesh" id="SphereMesh_i5215"]
-radius = 0.2
-height = 0.4
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_jiawf"]
+radius = 0.22
+height = 1.8
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_sqpox"]
+albedo_texture = ExtResource("2_4ayty")
+uv1_triplanar = true
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_8276r"]
 radius = 0.225
 height = 1.8
+
+[sub_resource type="SphereMesh" id="SphereMesh_i5215"]
+radius = 0.2
+height = 0.4
 
 [sub_resource type="Animation" id="Animation_4ayty"]
 length = 0.001
@@ -99,6 +108,9 @@ _data = {
 &"anim_head_attack_01": SubResource("Animation_jiawf")
 }
 
+[sub_resource type="LabelSettings" id="LabelSettings_4ayty"]
+font_color = Color(1, 0.640625, 0, 1)
+
 [node name="actor_player" type="CharacterBody3D"]
 collision_layer = 2
 collision_mask = 5
@@ -109,6 +121,16 @@ run_speed = 10.0
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.892, 0.014)
 
 [node name="Camera3D" type="Camera3D" parent="head"]
+current = true
+
+[node name="mesh" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.999937, 0, 0.0112397, 0, 1, 0, -0.0112397, 0, 0.999937, 0, 0, 0)
+visibility_range_begin = 1.0
+mesh = SubResource("CapsuleMesh_jiawf")
+surface_material_override/0 = SubResource("StandardMaterial3D_sqpox")
+
+[node name="collision" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_8276r")
 
 [node name="AlienAnimPosition" type="Marker3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.367941, -1.07692)
@@ -122,8 +144,11 @@ skeleton = NodePath("../..")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
 target_position = Vector3(0, 0.5, 0)
 
-[node name="collision" type="CollisionShape3D" parent="."]
-shape = SubResource("CapsuleShape3D_8276r")
+[node name="label" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.04028, 0)
+billboard = 2
+no_depth_test = true
+text = "PLAYER"
 
 [node name="BodyAnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
@@ -148,3 +173,43 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 1)
+
+[node name="how_to_play" type="Label" parent="PlayerUI"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 20.0
+offset_top = -175.0
+offset_right = 296.0
+offset_bottom = -17.0
+grow_vertical = 0
+text = "HOW TO PLAYER
+
+- WASD: Movement
+- Shift: Run
+- C: Crouch
+- Esc: Show Cursor"
+label_settings = SubResource("LabelSettings_4ayty")
+
+[node name="DebugUI" type="Control" parent="PlayerUI"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="title" type="Label" parent="PlayerUI/DebugUI"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -53.5
+offset_top = 17.0
+offset_right = 53.5
+offset_bottom = 40.0
+grow_horizontal = 2
+text = "DEBUG MODE"
+label_settings = SubResource("LabelSettings_4ayty")
+horizontal_alignment = 1

@@ -54,6 +54,7 @@ var movement_target:Vector3
 
 #region GODOT FUNCTIONS
 func _ready() -> void:
+	DebugManager.xeno_ref = self
 	current_speed = walk_speed
 
 func _physics_process(delta: float) -> void:
@@ -76,7 +77,10 @@ func _physics_process(delta: float) -> void:
 		velocity.y -= 10.0
 
 func _process(delta: float) -> void:
-	debug()
+	navigation_agent.debug_enabled = true if DebugManager.debug_ai_pathfinding else false
+	if DebugManager.debug_ai_vision_cones_draw: vision_system.change_vision_debug_draw(true)
+	else: vision_system.change_vision_debug_draw(false)
+	
 #endregion
 
 #region CONTROLLERS
@@ -178,7 +182,7 @@ func debug():
 			can_listen = !can_listen
 		ImGui.TreePop()
 	
-	if can_see_actors and ImGui.TreeNode("Xenomorph Vision System"):
+	if can_see_actors and ImGui.TreeNode("XENO DEBUG"):
 		ImGui.Text("seeing_player: %s" % vision_system.seeing_player)
 		ImGui.Text("is_player_visible: %s" % vision_system.is_player_visible)
 		ImGui.Text("player_ref: %s" % vision_system.player_ref)

@@ -3,6 +3,10 @@ extends Node3D
 @onready var marker_target: MarkerTarget = $MarkerTarget
 
 @export var active:bool = false
+@export_group("Flags")
+@export var debug_ai_pathfinding:bool = false
+@export var debug_set_target_position:bool = false
+@export var debug_ai_vision_cones_draw:bool = false
 @export var xeno_ref:ActorXenomorph
 
 func _input(event: InputEvent) -> void:
@@ -24,3 +28,15 @@ func _input(event: InputEvent) -> void:
 			marker_target.global_position = Vector3(_position.x, 1.0, _position.z)
 			marker_target.visible = true
 			xeno_ref.navigation_agent.set_target_position(marker_target.global_position)
+
+func debug():
+	ImGui.Begin("DebugMode")
+	if ImGui.TreeNode("Flags"):
+		if ImGui.Button("debug_ai_pathfinding: %s" % debug_ai_pathfinding):
+			debug_ai_pathfinding = !debug_ai_pathfinding
+		if ImGui.Button("debug_set_target_position: %s" % debug_set_target_position):
+			debug_set_target_position = !debug_set_target_position
+		if ImGui.Button("debug_ai_vision_cones_draw: %s" % debug_ai_vision_cones_draw):
+			debug_ai_vision_cones_draw = !debug_ai_vision_cones_draw
+		ImGui.EndPopup()
+	ImGui.End()

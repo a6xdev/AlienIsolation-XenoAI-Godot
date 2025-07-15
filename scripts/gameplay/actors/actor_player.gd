@@ -2,7 +2,7 @@ extends CharacterBody3D
 class_name Player
 
 @onready var head: Node3D = $head
-
+@onready var camera: Camera3D = $head/Camera3D
 @onready var body_animation_player: AnimationPlayer = $BodyAnimationPlayer
 @onready var alien_anim_position: Marker3D = $AlienAnimPosition
 
@@ -48,7 +48,7 @@ var is_crouching:bool = false
 
 #region GODOT FUNCTIONS
 func _ready() -> void:
-	pass
+	DebugManager.player_ref = self
 
 func _input(event: InputEvent) -> void:
 	if can_move_head and not in_debug:
@@ -66,15 +66,13 @@ func _input(event: InputEvent) -> void:
 	if Input.is_action_just_pressed("a_crouch"): crouch_mechanic()
 
 func _process(delta: float) -> void:
-	debug()
-	
 	if in_debug:
 		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 	else:
 		Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 
 func _physics_process(delta: float) -> void:
-	if not in_debug:
+	if not in_debug and not DebugManager.active_free_camera:
 		# Controllers
 		state_controller()
 		#sound_controller(delta) if can_move else null
@@ -165,16 +163,11 @@ func kill_player():
 	$PlayerUI/BG.show()
 	MapManager.rooms.clear()
 	MapManager.vents.clear()
-	await get_tree().create_timer(3.0).timeout
+	DebugManager.active_free_camera = false
 	get_tree().reload_current_scene()
 	
 func debug():
 	ImGui.Begin("Player Manager")
-	if ImGui.Button("SoundEvent") or Input.is_action_just_pressed("ui_cancel"):
-		var sound = SOUND_EVENT.instantiate()
-		add_child(sound)
-		sound.global_position = global_position
-		Logger.print_msg(str("SOUND_EVENT"))
 	ImGui.End()
 #endregion
 
