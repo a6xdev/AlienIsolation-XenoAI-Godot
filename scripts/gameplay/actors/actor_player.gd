@@ -1,3 +1,6 @@
+# This code is a mess and could be better organized, but since that's not the focus of this project,
+# it's going to stay like this.
+
 extends CharacterBody3D
 class_name Player
 

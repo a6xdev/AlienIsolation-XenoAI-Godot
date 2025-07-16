@@ -1,3 +1,6 @@
+# This script is very important for the AI's patrol mode. I designed this system based on the Alien's behavior.
+# You'll probably need to tweak it a bit to suit your preferences.
+
 extends Node
 
 var last_room:MapRoomSystem
@@ -28,6 +31,7 @@ func get_random_room() -> MapRoomSystem:
 	var room = rooms[randi() % rooms.size()]
 	return room
 
+
 func get_perfect_room(ai_position:Vector3) -> MapRoomSystem:
 	var min_score = 0.3
 	
@@ -40,7 +44,7 @@ func get_perfect_room(ai_position:Vector3) -> MapRoomSystem:
 			return get_random_room()
 			
 		if room == enemy_current_room:
-			# logic to explore the place.	
+			# TODO: logic to explore the place.
 			Logger.print_msg(str("AI_IN_SAME_ROOM"))
 			return get_random_room()
 			

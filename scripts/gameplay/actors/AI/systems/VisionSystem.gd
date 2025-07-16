@@ -26,11 +26,12 @@ func update_system(delta:float):
 		return
 	
 	var modifier:float = 0.0
+	# Here you can adjust the values to your liking. You can make the AI more difficult or easier by balancing these numbers.
 	if focused_detecting: modifier += 5.0
 	if normal_detecting: modifier += 3.0
 	if peripheral_detecting: modifier += 1.5
 	if player_ref.is_crouching: modifier *= 0.5
-	# if player is in light
+	# TODO: player_ref.is_in_light
 	
 	if modifier > 0.0: 
 		seeing_player = clamp(seeing_player + modifier * delta, 0.0, SEE_THRESHOLD)

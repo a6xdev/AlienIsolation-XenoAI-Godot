@@ -1,3 +1,5 @@
+# It is not used.
+
 extends Node3D
 
 @onready var marker_target: MarkerTarget = $MarkerTarget

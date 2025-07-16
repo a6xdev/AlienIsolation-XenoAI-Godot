@@ -1,11 +1,10 @@
 extends Node
 
+# Why did I use an export instead of just using @onready?
+# Well, I don't really know either, it's just personal preference.
 @export var actor:ActorXenomorph
 
 var CurrentVent:VentWaypoint = null
-
-#func _process(delta: float) -> void:
-	#debug()
 
 func update_behavior(delta:float):
 	if not CurrentVent:
@@ -16,17 +15,14 @@ func update_behavior(delta:float):
 		actor.ToVent = true
 		actor.IsInVent = true
 
-func debug():
-	ImGui.Begin("Vent Behavior")
-	ImGui.Text("ToVent: %s" % actor.ToVent)
-	ImGui.Text("IsInVent: %s" % actor.IsInVent)
-	ImGui.End()
-
 func _on_animation_tree_animation_finished(anim_name: StringName) -> void:
 	match anim_name:
 		"vent_climb_in":
+			actor.model.hide()
+			# Here you can modify the timer for the AI to exit the vent.
 			await get_tree().create_timer(4.0).timeout
 			actor.ToVent = false
+			actor.model.show()
 		"vent_climb_out":
 			actor.IsInVent = false
 			CurrentVent = null

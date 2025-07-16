@@ -1,11 +1,13 @@
 extends Node
 
+# Why did I use an export instead of just using @onready?
+# Well, I don't really know either, it's just personal preference.
 @export var actor:ActorXenomorph
 
 var started:bool = false
 
-var patrol_current_target = null
-var waiting_for_new_target := false
+var PatrolCurrentTarget = null
+var WaitingForNewTarget := false
 
 var IsGointToDuct:bool = false
 
@@ -18,15 +20,14 @@ func _ready() -> void:
 
 func update_behavior(delta: float) -> void:
 	if not started:
-		patrol_current_target = MapManager.get_random_room()
-		actor.navigation_agent.set_target_position(patrol_current_target.global_position)
+		PatrolCurrentTarget = MapManager.get_random_room()
+		actor.navigation_agent.set_target_position(PatrolCurrentTarget.global_position)
 		started = true
 	
-	if actor.navigation_agent.is_navigation_finished() and not waiting_for_new_target:
+	if actor.navigation_agent.is_navigation_finished() and not WaitingForNewTarget:
 		TargetIndex += 1
 		GoToVentIndex += 1
-		
-		waiting_for_new_target = true
+		WaitingForNewTarget = true
 		
 		if TargetIndex > 3 or (MapManager.player_current_room == MapManager.enemy_current_room):
 			await get_tree().create_timer(5.0).timeout
@@ -37,7 +38,7 @@ func update_behavior(delta: float) -> void:
 			GoToVentIndex = 0
 			started = false
 		else:
-			patrol_current_target = MapManager.get_perfect_room(actor.global_position)
-			actor.navigation_agent.set_target_position(patrol_current_target.global_position)
+			PatrolCurrentTarget = MapManager.get_perfect_room(actor.global_position)
+			actor.navigation_agent.set_target_position(PatrolCurrentTarget.global_position)
 		
-		waiting_for_new_target = false
+		WaitingForNewTarget = false

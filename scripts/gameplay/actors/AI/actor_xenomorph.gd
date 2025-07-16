@@ -4,6 +4,7 @@ class_name ActorXenomorph
 @onready var animation_player: AnimationPlayer = $model/AnimationPlayer
 @onready var animation_tree: AnimationTree = $model/AnimationTree
 @onready var navigation_agent: NavigationAgent3D = $NavigationAgent
+@onready var model: Node3D = $model
 
 @onready var vision_system: Node = $systems/VisionSystem
 
@@ -25,19 +26,18 @@ enum behaviors_list {
 var current_behaviors_list:behaviors_list = behaviors_list.PATROL
 
 @export_group("Actor Settings")
-@export var can_move:bool = true
-@export var can_see_actors:bool = false
-@export var can_listen:bool = false
+@export var CanMove:bool = true
+@export var CanSeeActors:bool = false
+@export var CanHear:bool = false
 
 @export_subgroup("Speed Settings")
-@export var walk_speed:float = 2.0
-@export var run_speed:float = 5.0
-@export var rotation_speed:int = 2
-var accel_speed:float = 30.0
+@export var WalkSpeed:float = 2.0
+@export var RunSpeed:float = 5.0
+@export var RotationSpeed:int = 2
+var AccelSpeed:float = 30.0
 
-var current_speed:float = 0.0
-var current_speed_anim:float = 0.0
-var target_speed:float = 0.0
+var CurrentSpeed:float = 0.0
+var TargetSpeed:float = 0.0
 
 var IsStopped:bool = false
 var IsWalking:bool = false
@@ -49,19 +49,18 @@ var ToVent:bool = false
 var IsInVent:bool = false
 var IsAttacking:bool = false
 
-# Movement
 var movement_target:Vector3
 
 #region GODOT FUNCTIONS
 func _ready() -> void:
 	DebugManager.xeno_ref = self
-	current_speed = walk_speed
+	CurrentSpeed = WalkSpeed
 
 func _physics_process(delta: float) -> void:
 	movement_controller(delta)
 	animation_controller(delta)
 	
-	if can_see_actors: vision_system.update_system(delta)
+	if CanSeeActors: vision_system.update_system(delta)
 	
 	match current_behaviors_list:
 		behaviors_list.PATROL:
@@ -85,31 +84,35 @@ func _process(delta: float) -> void:
 
 #region CONTROLLERS
 func animation_controller(delta:float):
+	# If you have other ways to organize or clean up this pile of booleans,
+	# please open an issue and let me know, I beg you.
 	if velocity.length() >= 1.0:
 		match current_behaviors_list:
 			behaviors_list.PATROL:
 				IsStopped = false
 				IsWalking = true
 				IsRunning = false
-				current_speed = walk_speed
+				CurrentSpeed = WalkSpeed
 			behaviors_list.INVESTIGATE:
 				IsStopped = false
 				IsWalking = true
 				IsRunning = false
-				current_speed = walk_speed
+				CurrentSpeed = WalkSpeed
 			behaviors_list.CHASE:
 				IsStopped = false
 				IsWalking = false
 				IsRunning = true
-				current_speed = run_speed
+				CurrentSpeed = RunSpeed
 	else:
 		IsStopped = true
 		IsWalking = false
 		IsRunning = false
 	
 func movement_controller(delta):
-	if can_move:
+	if CanMove:
 		if navigation_agent.is_navigation_finished():
+			# This could be used for a better investigation system, where the AI explores the area more thoroughly.
+			# Maybe a check like "MapManager.player_current_room == MapManager.enemy_current_room" could be used for that.
 			pass
 		
 		var next_target = navigation_agent.get_next_path_position()
@@ -117,8 +120,8 @@ func movement_controller(delta):
 		var direction = (new_next_target - global_position).normalized()
 		var target_rotation = atan2(direction.x, direction.z)
 		
-		velocity = direction * current_speed
-		rotation.y = lerp_angle(rotation.y, target_rotation, rotation_speed * delta)
+		velocity = direction * CurrentSpeed
+		rotation.y = lerp_angle(rotation.y, target_rotation, RotationSpeed * delta)
 		
 		movement_target = new_next_target
 
@@ -153,7 +156,6 @@ func debug():
 	var current_behavior:String = ""
 	
 	ImGui.Begin("%s" % name)
-	#ImGui.Text("velocity: %s" % velocity.length())
 	match current_behaviors_list:
 		behaviors_list.PATROL:
 			current_behavior = "PATROL"
@@ -165,24 +167,21 @@ func debug():
 			current_behavior = "DUCT"
 	
 	ImGui.Text("current_behavior: %s" % current_behavior)
-	ImGui.Text("current_speed: %s" % current_speed)
+	ImGui.Text("CurrentSpeed: %s" % CurrentSpeed)
 	ImGui.Text("velocity: %s" % velocity.length())
 	
-	#if ImGui.TreeNode("States"):
-		#ImGui.TreePop()
-	
 	if ImGui.TreeNode("Actor Flags"):
-		if ImGui.Button("can_move: %s" % can_move):
-			can_move = !can_move
+		if ImGui.Button("CanMove: %s" % CanMove):
+			CanMove = !CanMove
 		
-		if ImGui.Button("can_see_actors: %s" % can_see_actors):
-			can_see_actors = !can_see_actors
+		if ImGui.Button("CanSeeActors: %s" % CanSeeActors):
+			CanSeeActors = !CanSeeActors
 		
-		if ImGui.Button("can_listen: %s" % can_listen):
-			can_listen = !can_listen
+		if ImGui.Button("CanHear: %s" % CanHear):
+			CanHear = !CanHear
 		ImGui.TreePop()
 	
-	if can_see_actors and ImGui.TreeNode("XENO DEBUG"):
+	if CanSeeActors and ImGui.TreeNode("XENO DEBUG"):
 		ImGui.Text("seeing_player: %s" % vision_system.seeing_player)
 		ImGui.Text("is_player_visible: %s" % vision_system.is_player_visible)
 		ImGui.Text("player_ref: %s" % vision_system.player_ref)

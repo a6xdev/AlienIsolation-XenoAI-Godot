@@ -2,10 +2,15 @@ extends Node
 
 @onready var attack_camera_3d: Camera3D = $"../../model/xenomorph_main/Skeleton3D/AttackCamera/AttackCamera3D"
 
+# Why did I use an export instead of just using @onready?
+# Well, I don't really know either, it's just personal preference.
 @export var actor:ActorXenomorph
+
 var player:Player
 
 func attack() -> bool:
+	# anim_position is a Marker3D located in the player's scene.
+	# It serves as the reference point where the Alien should be when performing the attack animation.
 	var anim_position = player.alien_anim_position.global_position
 	anim_position.y = player.global_position.y
 	
@@ -17,9 +22,8 @@ func attack() -> bool:
 	return true
 
 func end_game():
-	# when xenomorph makes your attack animation
+	# This function is triggered when the Xenomorph performs its attack.
 	# You can see the function being called in the "attack1" animation in the AnimationPlayer.
-	
 	player.kill_player()
 
 #region SIGNALS

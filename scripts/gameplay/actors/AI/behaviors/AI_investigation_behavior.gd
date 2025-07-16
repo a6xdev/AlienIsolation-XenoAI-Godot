@@ -1,11 +1,12 @@
 extends Node
 
-
 enum investigation_type {
 	DIRECT,
 	INDIRECT
 }
 
+# Why did I use an export instead of just using @onready?
+# Well, I don't really know either, it's just personal preference.
 @export var actor:ActorXenomorph
 
 var current_investigation_type:investigation_type = investigation_type.DIRECT
