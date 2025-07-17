@@ -86,7 +86,7 @@ func _process(delta: float) -> void:
 func animation_controller(delta:float):
 	# If you have other ways to organize or clean up this pile of booleans,
 	# please open an issue and let me know, I beg you.
-	if velocity.length() >= 1.0:
+	if velocity.length() >= 0.5:
 		match current_behaviors_list:
 			behaviors_list.PATROL:
 				IsStopped = false
@@ -169,6 +169,10 @@ func debug():
 	ImGui.Text("current_behavior: %s" % current_behavior)
 	ImGui.Text("CurrentSpeed: %s" % CurrentSpeed)
 	ImGui.Text("velocity: %s" % velocity.length())
+	
+	ImGui.Text("IsStopped: %s" % IsStopped)
+	ImGui.Text("IsWalking: %s" % IsWalking)
+	ImGui.Text("IsRunning: %s" % IsRunning)
 	
 	if ImGui.TreeNode("Actor Flags"):
 		if ImGui.Button("CanMove: %s" % CanMove):

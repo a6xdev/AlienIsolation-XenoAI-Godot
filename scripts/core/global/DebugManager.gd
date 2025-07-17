@@ -40,8 +40,10 @@ func _process(delta: float) -> void:
 		debug()
 
 func debug():
-	xeno_ref.debug()
-	#player_ref.debug()
+	if xeno_ref:
+		xeno_ref.debug()
+	#if player_ref:
+		#player_ref.debug()
 	
 	ImGui.Begin("DebugMode")
 	if ImGui.Button("actove_free_camera: %s" % active_free_camera):
