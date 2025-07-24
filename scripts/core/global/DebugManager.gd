@@ -46,7 +46,7 @@ func debug():
 		#player_ref.debug()
 	
 	ImGui.Begin("DebugMode")
-	if ImGui.Button("actove_free_camera: %s" % active_free_camera):
+	if ImGui.Button("active_free_camera: %s" % active_free_camera):
 		active_free_camera = !active_free_camera
 		
 		if active_free_camera:

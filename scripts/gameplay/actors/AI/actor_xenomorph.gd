@@ -5,6 +5,7 @@ class_name ActorXenomorph
 @onready var animation_tree: AnimationTree = $model/AnimationTree
 @onready var navigation_agent: NavigationAgent3D = $NavigationAgent
 @onready var model: Node3D = $model
+@onready var attach_spine: BoneAttachment3D = $model/xenomorph_main/Skeleton3D/AttachSpine
 
 @onready var vision_system: Node = $systems/VisionSystem
 
@@ -50,6 +51,7 @@ var IsInVent:bool = false
 var IsAttacking:bool = false
 
 var movement_target:Vector3
+var rotation_target:float
 
 #region GODOT FUNCTIONS
 func _ready() -> void:
@@ -124,6 +126,7 @@ func movement_controller(delta):
 		rotation.y = lerp_angle(rotation.y, target_rotation, RotationSpeed * delta)
 		
 		movement_target = new_next_target
+		rotation_target = target_rotation
 
 		move_and_slide()
 	else:
@@ -195,4 +198,7 @@ func debug():
 		
 		ImGui.TreePop()
 	ImGui.End()
+#endregion
+
+#region SIGNALS
 #endregion

@@ -1,7 +1,11 @@
-[gd_scene load_steps=12 format=3 uid="uid://co0dhjxl6y006"]
+[gd_scene load_steps=17 format=3 uid="uid://co0dhjxl6y006"]
 
 [ext_resource type="Script" uid="uid://oiyh5n0frlx4" path="res://scripts/gameplay/actors/actor_player.gd" id="1_i5215"]
 [ext_resource type="Texture2D" uid="uid://debcg28tepnmg" path="res://assets/textures/GroundPrototype/Orange/texture_09.png" id="2_4ayty"]
+[ext_resource type="AudioStream" uid="uid://bl4ajfm5s5lt8" path="res://assets/audio/sfx/footstep/metal_solid_step-01.ogg" id="3_e0iux"]
+[ext_resource type="AudioStream" uid="uid://5e1ag6ay6x0b" path="res://assets/audio/sfx/footstep/metal_solid_step-02.ogg" id="4_w7mns"]
+[ext_resource type="AudioStream" uid="uid://bv5acy1efeigy" path="res://assets/audio/sfx/footstep/metal_solid_step-03.ogg" id="5_35aqh"]
+[ext_resource type="AudioStream" uid="uid://dp3qevv7deb20" path="res://assets/audio/sfx/footstep/metal_solid_step-04.ogg" id="6_i0ceb"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_jiawf"]
 radius = 0.22
@@ -14,6 +18,14 @@ uv1_triplanar = true
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_8276r"]
 radius = 0.225
 height = 1.8
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_j7a45"]
+playback_mode = 2
+streams_count = 4
+stream_0/stream = ExtResource("3_e0iux")
+stream_1/stream = ExtResource("4_w7mns")
+stream_2/stream = ExtResource("5_35aqh")
+stream_3/stream = ExtResource("6_i0ceb")
 
 [sub_resource type="SphereMesh" id="SphereMesh_i5215"]
 radius = 0.2
@@ -115,7 +127,7 @@ font_color = Color(1, 0.640625, 0, 1)
 collision_layer = 2
 collision_mask = 5
 script = ExtResource("1_i5215")
-run_speed = 10.0
+run_speed = 5.0
 
 [node name="head" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.892, 0.014)
@@ -132,6 +144,11 @@ surface_material_override/0 = SubResource("StandardMaterial3D_sqpox")
 [node name="collision" type="CollisionShape3D" parent="."]
 shape = SubResource("CapsuleShape3D_8276r")
 
+[node name="sounds" type="Node3D" parent="."]
+
+[node name="Footsteps" type="AudioStreamPlayer3D" parent="sounds"]
+stream = SubResource("AudioStreamRandomizer_j7a45")
+
 [node name="AlienAnimPosition" type="Marker3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.367941, -1.07692)
 
@@ -144,8 +161,9 @@ skeleton = NodePath("../..")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
 target_position = Vector3(0, 0.5, 0)
 
-[node name="label" type="Label3D" parent="."]
+[node name="player_name_label" type="Label3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.04028, 0)
+visibility_range_begin = 1.0
 billboard = 2
 no_depth_test = true
 text = "PLAYER"
@@ -184,7 +202,7 @@ offset_top = -175.0
 offset_right = 296.0
 offset_bottom = -17.0
 grow_vertical = 0
-text = "HOW TO PLAYER
+text = "HOW TO PLAY
 
 - WASD: Movement
 - Shift: Run

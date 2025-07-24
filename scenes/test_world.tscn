@@ -50,6 +50,8 @@ walk_speed = 2.5
 
 [node name="actor_xenomorph" parent="actors" instance=ExtResource("1_kyfjp")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13, 1.25, 0.572917)
+CanSeeActors = false
+CanHear = false
 
 [node name="map" type="Node" parent="."]
 

@@ -5,7 +5,7 @@ extends Node
 @export var actor:ActorXenomorph
 
 func _on_sound_detector_area_entered(area: Area3D) -> void:
-	if area is SoundEvent and actor.CanHear:
+	if area is SoundEvent and actor.CanHear and not actor.current_behaviors_list == actor.behaviors_list.CHASE:
 		actor.change_behavior(actor.behaviors_list.INVESTIGATE)
 		ai_investigatin_behavior.set_place_to_investigate(area.global_position)
 		Logger.print_msg(str("AI_HEARD_SOUND"))

@@ -17,6 +17,9 @@ func attack() -> bool:
 	actor.global_position = lerp(actor.global_position, anim_position, 1.0)
 	actor.rotate_towards_target(player.global_position)
 	
+	player.can_move_head = false
+	player.can_move = false
+	
 	actor.IsAttacking = true
 	attack_camera_3d.current = true
 	return true

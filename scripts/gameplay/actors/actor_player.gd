@@ -36,6 +36,7 @@ var current_player_state:STATE = STATE.IDLE
 @export var accel_speed:float = 30.0
 @export var walk_speed:float = 0.7
 @export var run_speed:float = 2.0
+@export var crouch_speed:float = 1.0
 
 var cam_max_angle = 90
 var cam_min_angle = -80
@@ -78,7 +79,7 @@ func _physics_process(delta: float) -> void:
 	if not in_debug and not DebugManager.active_free_camera:
 		# Controllers
 		state_controller()
-		#sound_controller(delta) if can_move else null
+		sound_controller(delta) if can_move else null
 		camera_controller()
 		movement_controller(delta)
 #endregion
@@ -115,14 +116,30 @@ func sound_controller(_delta:float):
 	
 	if current_player_state != STATE.IDLE and is_on_floor():
 		if footstep_timer >= footstep_interval and velocity.length() > 0.1:
-			match current_player_state:
-				STATE.WALKING:
-					$sounds/Footstep.play()
-					footstep_interval = 0.55
-				STATE.RUNNING:
-					$sounds/Footstep.play()
-					footstep_interval = 0.35
-					
+			var sound_event = SOUND_EVENT.instantiate()
+			
+			if is_crouching:
+				footstep_interval = 0.75
+				$sounds/Footsteps.play()
+				$sounds/Footsteps.volume_db = -15.0
+				sound_event.max_distance = 5.0
+			else:
+				match current_player_state:
+					STATE.WALKING:
+						footstep_interval = 0.55
+						$sounds/Footsteps.play()
+						$sounds/Footsteps.volume_db = -5.0
+						sound_event.max_distance = 10.0
+						$sounds/Footsteps.add_child(sound_event)
+						sound_event.global_position = global_position
+					STATE.RUNNING:
+						footstep_interval = 0.35
+						$sounds/Footsteps.play()
+						$sounds/Footsteps.volume_db = 0.0
+						sound_event.max_distance = 20.0
+						$sounds/Footsteps.add_child(sound_event)
+						sound_event.global_position = global_position
+						
 			footstep_timer = 0.0
 
 func movement_controller(delta:float):
@@ -133,7 +150,12 @@ func movement_controller(delta:float):
 			Input.get_action_strength("m_backward") - Input.get_action_strength("m_forward")
 		).normalized().rotated(Vector3.UP, rotation.y)
 		
-		if (Input.get_action_strength("m_run") && Input.get_action_strength("m_forward") && can_run) or (run_toggle and (run_toggle and Input.get_action_strength("m_forward") > 0.3 and can_run)):
+		if is_crouching:
+			velocity.x = lerp(velocity.x, move_dir.x * crouch_speed, accel_speed * delta)
+			velocity.z = lerp(velocity.z, move_dir.z * crouch_speed, accel_speed * delta)
+			is_moving = true
+			is_running = false
+		elif (Input.get_action_strength("m_run") && Input.get_action_strength("m_forward") && can_run) or (run_toggle and (run_toggle and Input.get_action_strength("m_forward") > 0.3 and can_run)):
 			velocity.x = lerp(velocity.x, move_dir.x * run_speed, accel_speed * delta)
 			velocity.z = lerp(velocity.z, move_dir.z * run_speed, accel_speed * delta)
 			is_moving = true
