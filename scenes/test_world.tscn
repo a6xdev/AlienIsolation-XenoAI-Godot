@@ -50,7 +50,6 @@ walk_speed = 2.5
 
 [node name="actor_xenomorph" parent="actors" instance=ExtResource("1_kyfjp")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13, 1.25, 0.572917)
-CanSeeActors = false
 CanHear = false
 
 [node name="map" type="Node" parent="."]
@@ -152,6 +151,7 @@ metadata/_custom_type_script = "uid://beohawaebv06o"
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(-0.866023, -0.433016, 0.250001, 0, 0.499998, 0.866027, -0.500003, 0.749999, -0.43301, 0, 0, 0)
+visible = false
 shadow_enabled = true
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]

@@ -4,6 +4,8 @@ This project is a fan-made, non-commercial recreation of the AI behavior seen in
 
 ## Demo Preview
 
+You can watch the demo video on [this](https://www.youtube.com/watch?v=l0Lk4iz7kTA) link.
+
 Watch short clips and devlogs:
 [@a6xdev on X/Twitter](https://x.com/a6xdev)
 
@@ -34,6 +36,7 @@ Hi, I'm Aislan --  a game developer from Brazil. I build AI system, gameplay mec
 
 - [Youtube](https://www.youtube.com/@a6xdev11)
 - [X/Twitter](https://x.com/a6xdev)
+- [Linkedin](https://www.linkedin.com/in/a6xdev/)
 
 ## Tools & Assets
 

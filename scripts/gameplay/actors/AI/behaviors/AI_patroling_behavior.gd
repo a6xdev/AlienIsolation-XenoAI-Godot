@@ -33,7 +33,7 @@ func update_behavior(delta: float) -> void:
 			await get_tree().create_timer(5.0).timeout
 			TargetIndex = 0
 		
-		if GoToVentIndex >= 6:
+		if GoToVentIndex >= 5:
 			actor.change_behavior(actor.behaviors_list.VENT)
 			GoToVentIndex = 0
 			started = false

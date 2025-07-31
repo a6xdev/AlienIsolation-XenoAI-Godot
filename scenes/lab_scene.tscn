@@ -6,6 +6,7 @@
 size = Vector2(100, 100)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ppo78"]
+cull_mode = 2
 albedo_texture = ExtResource("1_wm4oq")
 uv1_triplanar = true
 
@@ -27,6 +28,16 @@ surface_material_override/0 = SubResource("StandardMaterial3D_ppo78")
 [node name="StaticBody3D" type="StaticBody3D" parent="map/plane"]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="map/plane/StaticBody3D"]
+shape = SubResource("ConcavePolygonShape3D_wm4oq")
+
+[node name="plane2" type="MeshInstance3D" parent="map"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0)
+mesh = SubResource("PlaneMesh_8lnuj")
+surface_material_override/0 = SubResource("StandardMaterial3D_ppo78")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="map/plane2"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="map/plane2/StaticBody3D"]
 shape = SubResource("ConcavePolygonShape3D_wm4oq")
 
 [node name="CSGCombiner3D" type="CSGCombiner3D" parent="map"]

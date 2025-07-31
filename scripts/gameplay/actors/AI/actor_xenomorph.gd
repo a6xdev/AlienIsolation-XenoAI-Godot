@@ -53,14 +53,17 @@ var IsAttacking:bool = false
 var movement_target:Vector3
 var rotation_target:float
 
+var footstep_timer = 0.0
+var footstep_interval = 0.55
+
 #region GODOT FUNCTIONS
 func _ready() -> void:
 	DebugManager.xeno_ref = self
 	CurrentSpeed = WalkSpeed
 
 func _physics_process(delta: float) -> void:
-	movement_controller(delta)
 	animation_controller(delta)
+	movement_controller(delta)
 	
 	if CanSeeActors: vision_system.update_system(delta)
 	
@@ -109,7 +112,7 @@ func animation_controller(delta:float):
 		IsStopped = true
 		IsWalking = false
 		IsRunning = false
-	
+
 func movement_controller(delta):
 	if CanMove:
 		if navigation_agent.is_navigation_finished():
