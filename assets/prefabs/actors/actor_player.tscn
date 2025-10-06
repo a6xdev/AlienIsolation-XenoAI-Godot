@@ -1,0 +1,264 @@
+[gd_scene load_steps=22 format=3 uid="uid://b1umlray4ciwr"]
+
+[ext_resource type="Script" uid="uid://dtcxu3kc0ogxh" path="res://scripts/gameplay/actors/player/actor_player.gd" id="1_i5215"]
+[ext_resource type="AudioStream" uid="uid://txgilaqlrds8" path="res://assets/audio/footsteps/01_footstep.ogg" id="2_sqpox"]
+[ext_resource type="AudioStream" uid="uid://c5tx047j7heou" path="res://assets/audio/footsteps/02_footstep.ogg" id="3_xg6kc"]
+[ext_resource type="AudioStream" uid="uid://cf5u56m8cuprl" path="res://assets/audio/footsteps/03_footstep.ogg" id="4_e0iux"]
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_w7mns"]
+streams_count = 3
+stream_0/stream = ExtResource("2_sqpox")
+stream_1/stream = ExtResource("3_xg6kc")
+stream_2/stream = ExtResource("4_e0iux")
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_4ayty"]
+radius = 0.275
+height = 1.8
+
+[sub_resource type="Animation" id="Animation_jiawf"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("collision:shape:height")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [1.8]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("head:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0.7, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("TopCast:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0.9, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_4ayty"]
+resource_name = "a_crouch"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("collision:shape:height")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [1.2]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("head:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0.4, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("TopCast:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0.6, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_i5215"]
+resource_name = "a_crouch_02"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("collision:shape:height")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.8]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("head:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0.2, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("TopCast:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0.4, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_sqpox"]
+resource_name = "a_standard"
+length = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("head:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0.7, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("collision:shape:height")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [1.8]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("TopCast:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_sqpox"]
+_data = {
+&"RESET": SubResource("Animation_jiawf"),
+&"a_crouch": SubResource("Animation_4ayty"),
+&"a_crouch_02": SubResource("Animation_i5215"),
+&"a_standard": SubResource("Animation_sqpox")
+}
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_i5215"]
+animation = &"a_crouch"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_4ayty"]
+animation = &"a_crouch_02"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_jiawf"]
+animation = &"a_standard"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_sqpox"]
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_xg6kc"]
+xfade_time = 0.2
+advance_mode = 2
+advance_expression = "is_crouched"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_e0iux"]
+xfade_time = 0.2
+advance_mode = 2
+advance_expression = "is_crouched_to_hide"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_w7mns"]
+xfade_time = 0.2
+advance_mode = 2
+advance_expression = "not is_crouched_to_hide"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_35aqh"]
+xfade_time = 0.2
+advance_mode = 2
+advance_expression = "not is_crouched"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_i0ceb"]
+xfade_time = 0.2
+advance_mode = 2
+advance_expression = "not is_crouched"
+
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_j7a45"]
+states/a_crouch/node = SubResource("AnimationNodeAnimation_i5215")
+states/a_crouch/position = Vector2(528.857, 23.5918)
+states/a_crouch_02/node = SubResource("AnimationNodeAnimation_4ayty")
+states/a_crouch_02/position = Vector2(694.571, 101.959)
+states/a_standard/node = SubResource("AnimationNodeAnimation_jiawf")
+states/a_standard/position = Vector2(358.857, 101.347)
+transitions = ["Start", "a_standard", SubResource("AnimationNodeStateMachineTransition_sqpox"), "a_standard", "a_crouch", SubResource("AnimationNodeStateMachineTransition_xg6kc"), "a_crouch", "a_crouch_02", SubResource("AnimationNodeStateMachineTransition_e0iux"), "a_crouch_02", "a_crouch", SubResource("AnimationNodeStateMachineTransition_w7mns"), "a_crouch", "a_standard", SubResource("AnimationNodeStateMachineTransition_35aqh"), "a_crouch_02", "a_standard", SubResource("AnimationNodeStateMachineTransition_i0ceb")]
+
+[node name="actor_player" type="CharacterBody3D"]
+collision_layer = 2
+collision_mask = 5
+script = ExtResource("1_i5215")
+p_running_speed = 6.0
+
+[node name="head" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7, 0)
+
+[node name="camera" type="Camera3D" parent="head"]
+current = true
+
+[node name="sounds" type="Node3D" parent="."]
+
+[node name="footstep_sound" type="AudioStreamPlayer3D" parent="sounds"]
+stream = SubResource("AudioStreamRandomizer_w7mns")
+pitch_scale = 1.5
+
+[node name="TopCast" type="RayCast3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+target_position = Vector3(0, 0.5, 0)
+
+[node name="collision" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_4ayty")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_sqpox")
+}
+
+[node name="AnimationTree" type="AnimationTree" parent="."]
+tree_root = SubResource("AnimationNodeStateMachine_j7a45")
+advance_expression_base_node = NodePath("..")
+anim_player = NodePath("../AnimationPlayer")
