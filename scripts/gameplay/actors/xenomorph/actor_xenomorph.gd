@@ -4,7 +4,8 @@ class_name Xenomorph
 @onready var mesh: Node3D = $mesh
 @onready var collision: CollisionShape3D = $collision
 @onready var animation_tree: AnimationTree = $mesh/AnimationTree
-@onready var physical_bone_simulator: PhysicalBoneSimulator3D = $mesh/xenomorph_main/Skeleton3D/PhysicalBoneSimulator3D
+@onready var spring_bone_simulator_3d: SpringBoneSimulator3D = $mesh/xenomorph_main/Skeleton3D/SpringBoneSimulator3D
+
 @onready var vision_system: Node = $systems/VisionSystem
 @onready var agent: NavigationAgent3D = $agent
 @onready var attack_area: Area3D = $areas/AttackArea
@@ -17,10 +18,6 @@ class_name Xenomorph
 @onready var ai_investigate: Node = $behaviors/AI_INVESTIGATE
 @onready var ai_chase: Node = $behaviors/AI_CHASE
 @onready var ai_vent: Node = $behaviors/AI_VENT
-
-@onready var pb_tail_01: PhysicalBone3D = $"mesh/xenomorph_main/Skeleton3D/PhysicalBoneSimulator3D/Physical Bone tail 1"
-@onready var pb_tail_02: PhysicalBone3D = $"mesh/xenomorph_main/Skeleton3D/PhysicalBoneSimulator3D/Physical Bone tail 2"
-@onready var pb_tail_03: PhysicalBone3D = $"mesh/xenomorph_main/Skeleton3D/PhysicalBoneSimulator3D/Physical Bone tail 3"
 
 enum State {
 	PATROL,
@@ -62,15 +59,12 @@ func _ready() -> void:
 	await get_tree().create_timer(5.0)
 	
 	ai_patrol.start_behavior()
-	
-	physical_bone_simulator.physical_bones_start_simulation()
-	physical_bone_simulator.set_translation_domain("Physical Bone tail 1")
 
 func _process(delta: float) -> void:
 	if Input.is_action_just_pressed("any_key_02"):
 		ai_investigate.set_place_to_investigate(Global.player_ref.global_position)
 	
-	var t:float = 0.0
+	spring_bone_simulator_3d.set_joint_gravity_direction(0, 5, move_dir)
 	
 	match current_state:
 		State.PATROL:
@@ -95,9 +89,6 @@ func _physics_process(delta: float) -> void:
 	if not is_on_duct: movement_controller(delta)
 	if is_on_duct: duct_movement_controller(delta)
 	
-	pb_tail_01.linear_velocity = velocity
-	#pb_tail_01.angular_velocity = -move_dir
-	
 	if not is_on_floor():
 		velocity.y -= 9.8 * delta
 #endregion
@@ -119,8 +110,9 @@ func animation_controller() -> void:
 				is_walking = true
 				is_running = false
 			State.CHASE:
-				is_walking = false
-				is_running = true
+				if ai_chase.is_chasing:
+					is_walking = false
+					is_running = true
 			State.VENT:
 				is_walking = true
 				is_running = false
@@ -169,7 +161,7 @@ func attack() -> void:
 	
 	Global.player_ref.global_rotation = lerp(Global.player_ref.global_rotation, Global.xenomorph_ref.attack_camera_3d.global_rotation, 1.0)
 	
-	physical_bone_simulator.physical_bones_stop_simulation()
+	#rail_physics_bone.physical_bones_stop_simulation()
 
 func emit_kill_player() -> void:
 	KillPlayer.emit()
@@ -182,8 +174,10 @@ func _on_animation_tree_animation_finished(anim_name: StringName) -> void:
 			mesh.hide()
 			collision.disabled = true
 			duct_current_target = MapManager.get_random_duct()
+			ai_chase.reset_behavior()
+			vision_system.reset_all()
 		"vent_climb_out":
-			physical_bone_simulator.physical_bones_start_simulation()
+			spring_bone_simulator_3d.active = true
 			duct_current_target = null
 			ai_vent.reset_vent_behavior()
 			ai_patrol.set_random_target()

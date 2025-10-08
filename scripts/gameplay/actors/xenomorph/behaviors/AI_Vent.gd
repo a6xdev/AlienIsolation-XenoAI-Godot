@@ -19,7 +19,7 @@ func update_behavior(_delta:float) -> void:
 		is_going_to_duct = true
 	
 	if actor_xenomorph.agent.is_navigation_finished() and is_going_to_duct and not is_leaving_to_duct:
-		actor_xenomorph.physical_bone_simulator.physical_bones_stop_simulation()
+		actor_xenomorph.spring_bone_simulator_3d.active = false
 		is_going_to_duct = false
 		actor_xenomorph.is_on_duct = true
 		vent_climb_in.play()

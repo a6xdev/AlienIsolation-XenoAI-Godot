@@ -16,6 +16,7 @@ var motion = Vector3.ZERO
 @export_category("Player")
 @export var can_move:bool = true
 @export var can_move_cam:bool = true
+@export var can_lean:bool = true
 
 @export_group("Settings")
 @export var p_walkink_speed:float = 1.0
@@ -29,6 +30,7 @@ var is_walking:bool = false
 var is_running:bool = false
 var is_crouched:bool = false
 var is_crouched_to_hide:bool = false
+var is_leaning:bool = false
 
 var cam_max_angle = 90
 var cam_min_angle = -80
@@ -55,6 +57,8 @@ func _physics_process(delta: float) -> void:
 	camera_controller()
 	movement_controller(delta)
 	sound_controller(delta)
+	
+	lean_mechanic(delta)
 	
 	if not is_on_floor():
 		velocity.y -= 9.8 * delta
@@ -88,7 +92,7 @@ func camera_controller() -> void:
 		look_rot.x = clamp(look_rot.x, cam_min_angle, cam_max_angle)
 
 func movement_controller(_delta:float) -> void:
-	if can_move:
+	if can_move and not is_leaning:
 		move_dir = Vector3(
 			Input.get_action_strength("m_right") - Input.get_action_strength("m_left"),
 			0.0,
@@ -135,17 +139,32 @@ func sound_controller(_delta:float):
 					footstep_interval = 0.4
 					footstep_sound.play()
 					footstep_sound.volume_db = 0.0
-					sound_event.max_distance = 20.0
+					sound_event.max_distance = 15.0
 					sound_event.global_position = global_position
 				elif is_walking:
 					footstep_interval = 0.75
 					footstep_sound.play()
 					footstep_sound.volume_db = -15.0
-					sound_event.max_distance = 10.0
+					sound_event.max_distance = 5.0
 					sound_event.global_position = global_position
 			
 			footstep_timer = 0.0
 			
+#endregion
+
+#region MECHANICS
+func lean_mechanic(_delta):
+	if Input.is_action_pressed("a_lean") and can_lean:
+		is_leaning = true
+		if Input.is_action_pressed("m_left"):
+			self.rotation.z = lerp(self.rotation.z, 0.5, 10 * _delta)
+		elif Input.is_action_pressed("m_right"):
+			self.rotation.z = lerp(self.rotation.z, -0.5, 10 * _delta)
+		else:
+			self.rotation.z = lerp(self.rotation.z, 0.0, 10 * _delta)
+	else:
+		is_leaning = false
+		self.rotation.z = lerp(self.rotation.z, 0.0, 10 * _delta)
 #endregion
 
 #region CALLS

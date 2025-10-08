@@ -376,9 +376,12 @@ sky_material = SubResource("ProceduralSkyMaterial_7ddre")
 
 [sub_resource type="Environment" id="Environment_3qnke"]
 background_mode = 1
-background_color = Color(0.067471, 0.0676211, 0.0681564, 1)
+background_color = Color(0.132288, 0.134148, 0.140782, 1)
 sky = SubResource("Sky_qjeyg")
+tonemap_mode = 4
 ssao_enabled = true
+glow_enabled = true
+glow_bloom = 0.2
 
 [node name="TestScene" type="Node3D"]
 script = ExtResource("1_7ddre")
@@ -895,9 +898,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.00673, 0)
 [node name="obj_light_02" parent="map/Lights" instance=ExtResource("5_qjeyg")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.42533, 3.00673, 6.6)
 
-[node name="obj_light_03" parent="map/Lights" instance=ExtResource("5_qjeyg")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.9366, 3.00673, -0.94398)
-
 [node name="obj_light_04" parent="map/Lights" instance=ExtResource("5_qjeyg")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.80525, 3.00673, -8.55515)
 
@@ -931,10 +931,12 @@ metadata/_custom_type_script = "uid://cornl2yi0vhdw"
 
 [node name="actor_xenomorph" parent="actor" instance=ExtResource("1_g7g4h")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.532, 1, 0)
+collision_layer = 4
+collision_mask = 3
 ai_can_see = false
 
 [node name="actor_player" parent="actor" instance=ExtResource("2_j8ivh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 1, 5)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 1, 5)
 p_walkink_speed = 2.0
 p_running_speed = 5.0
 p_crounched_speed = 1.0

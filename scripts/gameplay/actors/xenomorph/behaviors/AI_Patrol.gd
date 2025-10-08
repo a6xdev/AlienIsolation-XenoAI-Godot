@@ -34,6 +34,7 @@ func update_behavior(_delta:float) -> void:
 		target_index += 1
 
 func reset_behavior() -> void:
+	old_target_index = -1
 	target_index = 0
 
 func set_random_target() -> void:

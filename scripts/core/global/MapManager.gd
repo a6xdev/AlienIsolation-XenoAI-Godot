@@ -56,6 +56,7 @@ func get_perfect_room(ai_position:Vector3) -> MapRoomSystem:
 		var distance_factor = 1.0 - clamp(distance / 60.0, 0.0, 1.0)
 		var score = room.activity_level * 0.6 + distance_factor * 0.4 + randf() * 0.1
 		
+		print(score)
 		if score >= min_score and not recently_visited.has(room):
 			viable_room_nearby.append({"room": room, "score": score})
 		else:

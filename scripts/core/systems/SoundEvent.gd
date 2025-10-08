@@ -1,6 +1,8 @@
 extends Area3D
 class_name SoundEvent
 
+var mesh := MeshInstance3D.new()
+var mesh_shape := BoxMesh.new()
 var collision_shape := CollisionShape3D.new()
 var shape := SphereShape3D.new()
 
@@ -10,7 +12,10 @@ var max_distance:float = 10.0
 var current_radius:float = 0.0
 
 func _ready() -> void:
+	#add_child(mesh)
 	add_child(collision_shape)
+	
+	mesh.mesh = mesh_shape
 	
 	collision_shape.shape = shape
 	shape.radius = 0.1

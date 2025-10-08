@@ -40,8 +40,6 @@ func reset_game():
 	actor_xenomorph.ai_can_see = true
 	actor_xenomorph.is_attacking = false
 	
-	actor_xenomorph.physical_bone_simulator.physical_bones_start_simulation()
-	
 	end_game_ui.hide()
 	
 func _on_actor_xenomorph_kill_player() -> void:
